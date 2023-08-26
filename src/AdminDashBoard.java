@@ -52,7 +52,7 @@ public class AdminDashBoard {
         Bus.put("date", date);
         boolean result = db.addBus(Bus);
         if(result){
-            System.out.println();
+            System.out.println(busName + "'s details were add successfully\n\n");
             displayBusList();
         }
         else {
