@@ -14,9 +14,12 @@
   <component name="DBNavigator.Project.DatabaseConsoleManager">
     <connection id="8e3787eb-2766-4833-ab77-c6f3a18c434e">
       <console name="busdatabase" type="STANDARD" schema="busdatabase" session="Main"><![CDATA[insert into bus (busName, source, destination, maxCapacity, bookedSeats, date) values ('Praveen', 'Chennai', 'Coimbatore', 60, '{}', '2023-10-22');
-select * from bus
+select * from bus where `busId` = 6 limit 1
 
-update bus set `busName` = 'partha' where `busId` = 4;]]></console>
+update bus set `busName` = 'partha' where `busId` = 4;
+
+
+select * from bus]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
