@@ -88,4 +88,75 @@ public class DataBaseConnectivity {
 			return false;
 		}
 	}
+
+	public Properties getBusDetailsByBusNumber(int busNumber) {
+		String query = "SELECT * FROM bus WHERE `busId` = " + busNumber + " LIMIT 1 ;";
+		Properties bus = new Properties();
+		try {
+			ResultSet resultSet = st.executeQuery(query);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			while (resultSet.next()){
+				int busId = (int) resultSet.getObject(1);
+				String busName = (String) resultSet.getObject(2);
+				String source = (String) resultSet.getObject(3);
+				String destination = (String) resultSet.getObject(4);
+				int maxCapacity = (int) resultSet.getObject(5);
+				Object bookedSeat = (Object) resultSet.getObject(6);
+				java.util.Date Date = (Date) resultSet.getObject(7);
+				String date = sdf.format(Date);
+				bus.put("busId", busId);
+				bus.put("busName", busName);
+				bus.put("source", source);
+				bus.put("destination", destination);
+				bus.put("maxCapacity", maxCapacity);
+				bus.put("bookedSeat", bookedSeat);
+				bus.put("date", date);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bus;
+	}
+
+	public boolean updateBusDetails(int busNumber, String fieldModified, String modifiedValue) {
+		String query = "UPDATE bus SET `" + fieldModified + "` = '" + modifiedValue + "' where `busId` = " + busNumber +";";
+		try {
+			st.executeUpdate(query);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public void addNewUser(String name, String email, String password, String contactNumber) {
+		boolean result = checkUserAlreadyExist(email);
+		if(result){
+			String query = "INSERT INTO userdetails (userName, userEmail, password, contactNumber) values ('" + name + "', '" + email + "', '" + password + "', '" + contactNumber + "')";
+			try {
+				st.executeUpdate(query);
+				System.out.println("Account created successfully");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		else{
+			System.out.println("User already exist with that email id");
+			System.out.println("Please try again later with different email id");
+		}
+	}
+
+	private boolean checkUserAlreadyExist(String email) {
+		String query = "SELECT userId FROM userdetails WHERE `userEmail` = \""+ email +"\";";
+		int userId = -1;
+		try {
+			ResultSet resultSet = st.executeQuery(query);
+			while (resultSet.next()){
+				userId = (int) resultSet.getObject(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userId == -1;
+	}
 }

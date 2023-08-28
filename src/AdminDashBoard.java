@@ -19,15 +19,64 @@ public class AdminDashBoard {
             case 2:
                 addNewBus();
                 break;
-//            case 3:
-//                updateBus();
-//                break;
+            case 3:
+                updateBus();
+                break;
             default:
-                System.out.println("Logout successfully.");
+                System.out.println("Logout successfully.\n\n");
                 return;
         }
         displayAdminOptions();
 
+    }
+
+    private void updateBus() {
+        displayBusList();
+        System.out.println();
+        System.out.println("Enter the Bus number to edit: ");
+        int busNumber = Integer.parseInt(scanner.nextLine());
+        Properties bus;
+        bus = db.getBusDetailsByBusNumber(busNumber);
+        System.out.println("Select Option:\n1) Edit Travels name\n2) Edit the source location\n3) Edit the Destination location\n4) Edit Maximum capacity\n5) Edit Journey Date");
+        int option = Integer.parseInt(scanner.nextLine());
+        String fieldModified, modifiedValue;
+        switch (option){
+            case 1:
+                System.out.println("Enter the new name (" + bus.get("busName") + ")");
+                modifiedValue = scanner.nextLine();
+                fieldModified = "busName";
+                break;
+            case 2:
+                System.out.println("Enter the new source location (" + bus.get("source") + ")");
+                modifiedValue = scanner.nextLine();
+                fieldModified = "source";
+                break;
+            case 3:
+                System.out.println("Enter the new destination location (" + bus.get("destination") + ")");
+                modifiedValue = scanner.nextLine();
+                fieldModified = "destination";
+                break;
+            case 4:
+                System.out.println("Enter the new capacity (" + bus.get("maxCapacity") + ")");
+                modifiedValue = scanner.nextLine();
+                fieldModified = "maxCapacity";
+                break;
+            case 5:
+                System.out.println("Enter the modified date of journey (" + bus.get("date") + ")");
+                modifiedValue = scanner.nextLine();
+                fieldModified = "date";
+                break;
+            default:
+                System.out.println("Invalid Option. Please try again.");
+                return;
+        }
+        boolean result = db.updateBusDetails(busNumber, fieldModified, modifiedValue);
+        if(result){
+            System.out.println("Updated Successfully");
+            displayBusList();
+        }else{
+            System.out.println("Something went wrong. Please try again.");
+        }
     }
 
     private void addNewBus() {
