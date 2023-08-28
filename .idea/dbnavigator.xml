@@ -19,7 +19,7 @@ select * from bus where `busId` = 6 limit 1
 update bus set `busName` = 'partha' where `busId` = 4;
 
 
-select * from bus]]></console>
+select * from userdetails;]]></console>
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">

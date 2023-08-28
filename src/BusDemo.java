@@ -19,6 +19,7 @@ public class BusDemo {
 		scanner.nextLine();
 		switch (userType) {
 			case 1:
+				showUserOptions();
 				break;
 			case 2:
 				Admin admin = new Admin();
@@ -32,6 +33,44 @@ public class BusDemo {
 				return;
 		}
 		welcomeMessage();
+	}
+
+	private static void showUserOptions() {
+		System.out.println("Select option:\n1) Login\n2) Create account\n3) Cancel and go back");
+		int option = Integer.parseInt(scanner.nextLine());
+		switch (option){
+			case 1:
+				userLogin();
+				break;
+			case 2:
+				userSignUp();
+				break;
+			case 3:
+				return;
+			default:
+				System.out.println("Invalid option. Please try again");
+				showUserOptions();
+		}
+	}
+
+	private static void userSignUp() {
+		User user = new User();
+		user.signUp();
+		userLogin();
+	}
+
+	private static void userLogin() {
+		User user = new User();
+		int userId = user.login();
+		if(userId != -1){
+			openUserDashboard();
+		}else{
+			System.out.println("Invalid Credentials. Please try again");
+			showUserOptions();
+		}
+	}
+
+	private static void openUserDashboard() {
 	}
 
 	private static void openAdminDashboard() {

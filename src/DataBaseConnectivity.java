@@ -128,4 +128,35 @@ public class DataBaseConnectivity {
 			return false;
 		}
 	}
+
+	public void addNewUser(String name, String email, String password, String contactNumber) {
+		boolean result = checkUserAlreadyExist(email);
+		if(result){
+			String query = "INSERT INTO userdetails (userName, userEmail, password, contactNumber) values ('" + name + "', '" + email + "', '" + password + "', '" + contactNumber + "')";
+			try {
+				st.executeUpdate(query);
+				System.out.println("Account created successfully");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		else{
+			System.out.println("User already exist with that email id");
+			System.out.println("Please try again later with different email id");
+		}
+	}
+
+	private boolean checkUserAlreadyExist(String email) {
+		String query = "SELECT userId FROM userdetails WHERE `userEmail` = \""+ email +"\";";
+		int userId = -1;
+		try {
+			ResultSet resultSet = st.executeQuery(query);
+			while (resultSet.next()){
+				userId = (int) resultSet.getObject(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userId == -1;
+	}
 }
