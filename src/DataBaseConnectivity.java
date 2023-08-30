@@ -159,4 +159,18 @@ public class DataBaseConnectivity {
 		}
 		return userId == -1;
 	}
+
+	public int getUserId(String email, String password) {
+		int userId = -1;
+		String query = "SELECT userId FROM userdetails WHERE `userEmail` = \""+ email +"\" AND `password` = \"" + password +"\" ;";
+		try {
+			ResultSet resultSet = st.executeQuery(query);
+			while (resultSet.next()){
+				 userId = (int) resultSet.getObject(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userId;
+	}
 }

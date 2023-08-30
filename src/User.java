@@ -5,7 +5,13 @@ public class User {
     DataBaseConnectivity db = new DataBaseConnectivity();
     
     public int login() {
-        return 0;
+        String email, password;
+        System.out.println("Enter your email id:");
+        email = scanner.nextLine();
+        System.out.println("Enter your password");
+        password = scanner.nextLine();
+        int userId = db.getUserId(email, password);
+        return userId;
     }
 
     public void signUp() {

@@ -22,9 +22,11 @@ public class AdminDashBoard {
             case 3:
                 updateBus();
                 break;
-            default:
+            case 4:
                 System.out.println("Logout successfully.\n\n");
                 return;
+            default:
+                System.out.println("Invalid option. Please try again.");
         }
         displayAdminOptions();
 
@@ -43,33 +45,29 @@ public class AdminDashBoard {
         switch (option){
             case 1:
                 System.out.println("Enter the new name (" + bus.get("busName") + ")");
-                modifiedValue = scanner.nextLine();
                 fieldModified = "busName";
                 break;
             case 2:
                 System.out.println("Enter the new source location (" + bus.get("source") + ")");
-                modifiedValue = scanner.nextLine();
                 fieldModified = "source";
                 break;
             case 3:
                 System.out.println("Enter the new destination location (" + bus.get("destination") + ")");
-                modifiedValue = scanner.nextLine();
                 fieldModified = "destination";
                 break;
             case 4:
                 System.out.println("Enter the new capacity (" + bus.get("maxCapacity") + ")");
-                modifiedValue = scanner.nextLine();
                 fieldModified = "maxCapacity";
                 break;
             case 5:
                 System.out.println("Enter the modified date of journey (" + bus.get("date") + ")");
-                modifiedValue = scanner.nextLine();
                 fieldModified = "date";
                 break;
             default:
                 System.out.println("Invalid Option. Please try again.");
                 return;
         }
+        modifiedValue = scanner.nextLine();
         boolean result = db.updateBusDetails(busNumber, fieldModified, modifiedValue);
         if(result){
             System.out.println("Updated Successfully");

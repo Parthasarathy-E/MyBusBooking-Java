@@ -14,9 +14,8 @@ import java.util.ArrayList;
 public class BusDemo {
 	static Scanner scanner= new Scanner(System.in);
 	public static void welcomeMessage(){
-		System.out.println("Welcome to My Bus Booking Service.\nPlease select your user type:-\n1) User\n2) Admin\n3) Exit\n\n");
-		int userType = scanner.nextInt();
-		scanner.nextLine();
+		System.out.println("Welcome to My Bus Booking Service.\nPlease select your user type:-\n1) User\n2) Admin\n3) Exit");
+		int userType = Integer.parseInt(scanner.nextLine());
 		switch (userType) {
 			case 1:
 				showUserOptions();
