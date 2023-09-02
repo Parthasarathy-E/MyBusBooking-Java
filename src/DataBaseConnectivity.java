@@ -18,7 +18,7 @@ import java.util.Properties;
 
 public class DataBaseConnectivity {
 	private String user = "root";
-	private String password = "Praveen@006";
+	private String password = "Praveen@006"; // "partha"
 	private String baseUrl = "jdbc:mysql://localhost:3306/busdatabase";
 	Statement st = null;
 	DataBaseConnectivity(){
@@ -172,5 +172,85 @@ public class DataBaseConnectivity {
 			e.printStackTrace();
 		}
 		return userId;
+	}
+
+	public List<Properties> getBusListByValue(String sourceLoc, String destinationLoc, String selectedDate) {
+		List<Properties> busList = new ArrayList<>();
+		String query = "SELECT * FROM bus WHERE `source` = \"" + sourceLoc + "\" and `destination` = \"" + destinationLoc + "\" and `date` = \"" + selectedDate + "\" ;";
+		try {
+			ResultSet resultSet = st.executeQuery(query);
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			while (resultSet.next()){
+				Properties Bus = new Properties();
+				int busId = (int) resultSet.getObject(1);
+				String busName = (String) resultSet.getObject(2);
+				String source = (String) resultSet.getObject(3);
+				String destination = (String) resultSet.getObject(4);
+				int maxCapacity = (int) resultSet.getObject(5);
+				Object bookedSeat = (Object) resultSet.getObject(6);
+				java.util.Date Date = (Date) resultSet.getObject(7);
+				String date = sdf.format(Date);
+				Bus.put("busId", busId);
+				Bus.put("busName", busName);
+				Bus.put("source", source);
+				Bus.put("destination", destination);
+				Bus.put("maxCapacity", maxCapacity);
+				Bus.put("bookedSeat", bookedSeat);
+				Bus.put("date", date);
+				busList.add(Bus);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return  busList;
+	}
+
+	public boolean createBooking(int busId, int userId, String source, String destination, String date, int noOfSeat) {
+		String query = "insert into booking (userId, source, destination, noOfSeats, busNumber, date) values ('" + userId + "', '" + source + "', '" + destination + "', '" + noOfSeat + "', '" + busId + "', '" + date + "')";
+		try {
+			st.executeUpdate(query);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+
+	public List<Properties> getBookingByUserId(int userId) {
+		List<Properties> bookingList = new ArrayList<>();
+		String query = "SELECT * FROM booking WHERE userId = '" + userId + "';";
+		try {
+			ResultSet resultSet = st.executeQuery(query);
+			while (resultSet.next()){
+				Properties booking = new Properties();
+				int bookingId = (int) resultSet.getObject(1);
+				String source = (String) resultSet.getObject(3);
+				String destination = (String) resultSet.getObject(4);
+				String date = (String) resultSet.getObject(5);
+				int busNumber = (int) resultSet.getObject(6);
+				int bookedSeat = (int) resultSet.getObject(7);
+				booking.put("bookingId", bookingId);
+				booking.put("source", source);
+				booking.put("destination", destination);
+				booking.put("busNumber", busNumber);
+				booking.put("bookedSeat", bookedSeat);
+				booking.put("date", date);
+				bookingList.add(booking);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return bookingList;
+	}
+
+	public boolean cancelBookingByBookingId(int bookingId) {
+		String query = "DELETE FROM booking WHERE bookingId = '" + bookingId + "';";
+		try {
+			st.executeUpdate(query);
+			return true;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 }
